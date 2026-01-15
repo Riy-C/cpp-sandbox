@@ -8,6 +8,7 @@
 #include <vector>
 #include <fstream>
 #include "Weapon.h"
+#include "LoreEntry.h"
 #include "json.hpp"
 
 using json_serializer = nlohmann::json;
@@ -257,25 +258,15 @@ void searchWeapon(const std::vector<Weapon>& weapons) {
 }
 
 //menu switch
-void displayMenu() {
-	std::cout << "--== Weapon Manager ==--\n";
-	std::cout << "[1] View Weapons\n";
-	std::cout << "[2] Add Weapon\n";
-	std::cout << "[3] Search for Weapon\n";
-	std::cout << "[4] Save and Quit\n";
-	std::cout << "Choice: ";
-}
-
-int main()
-{
-    std::cout << "Weapon Inventory System\n";
-    std::cout << "=======================\n";
-
-	std::vector<Weapon> weapons = loadWeapons("weapons.json");
-
+void weaponManagerMenu(std::vector<Weapon>& weapons) {
 	bool running = true;
 	while (running) {
-		displayMenu();
+		std::cout << "\n=== WEAPON MANAGER ===\n";
+		std::cout << "[1] View All Weapons\n";
+		std::cout << "[2] Add New Weapon\n";
+		std::cout << "[3] Search Weapon\n";
+		std::cout << "[4] Back to Main Menu\n";
+		std::cout << "Choice: ";
 
 		int choice;
 		std::cin >> choice;
@@ -291,8 +282,7 @@ int main()
 				searchWeapon(weapons);
 				break;
 			case 4:
-				saveWeapons(weapons, "weapons.json");
-				std::cout << "\nWeapons saved. Exiting Weapons Manager.\n";
+				std::cout << "\nReturning to Main Menu.\n";
 				running = false;
 				break;
 			default:
@@ -300,6 +290,37 @@ int main()
 				break;
 		}
 	}
-	return 0;
+}
+
+int main()
+{
+    std::cout << "Armatron Database\n";
+    std::cout << "=======================\n";
+
+	std::vector<Weapon> weapons = loadWeapons("weapons.json");
+	std::vector<LoreEntry> loreEntries = LoadLoreEntries("lore.json");
+
+	bool running = true;
+	while (running) {
+		std::cout << "\n--== MAIN MENU ==--\n";
+		std::cout << "[1] Weapon Manager\n";
+		std::cout << "[2] Lore Manager (Coming Soon)\n";
+		std::cout << "[3] Exit\n";
+		std::cout << "Choice: ";
+
+		int choice;
+		std::cin >> choice;
+
+		switch (choice) {
+		case 1:
+			weaponManagerMenu(weapons);
+			break;
+		case 2:
+			std::cout << "Lore Manager is under development. Stay tuned!\n";
+			break;
+		case 3:
+			saveWeapons(weapons, "weapons.json");
+		}
+	}
 }
 

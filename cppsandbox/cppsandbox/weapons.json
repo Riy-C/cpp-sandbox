@@ -1,0 +1,38 @@
+[
+    {
+        "class": "Occult",
+        "description": "this shotgun literally belongs to god. im serious. even holding this thing might burn your palms.",
+        "dmg": 100,
+        "name": "God's Boomstick",
+        "ndmg": 100,
+        "odmg": 750,
+        "price": 100000,
+        "rarity": "Signature",
+        "shape": "Shotgun",
+        "size": "Two-Handed"
+    },
+    {
+        "class": "Neo",
+        "description": "Omnigon Technologies' most recent iteration of their flagship Kestrel railpistol. Sleek, powerful and more efficient than ever, the user could go their entire lives without needing to replace the internal battery.",
+        "dmg": 100,
+        "name": "Omnigon I3 Kestrel",
+        "ndmg": 100,
+        "odmg": 750,
+        "price": 100000,
+        "rarity": "Signature",
+        "shape": "Pistol",
+        "size": "One-Handed"
+    },
+    {
+        "class": "Spiritbound",
+        "description": "Spiritbound Revolver series infamous for its unethical spiritbinding method. Inexperienced wielders beware; the demon housed inside is not there willingly.",
+        "dmg": 75,
+        "name": "Ainsoph DC1 Cthonica",
+        "ndmg": 50,
+        "odmg": 175,
+        "price": 800,
+        "rarity": "Rare",
+        "shape": "Revolver",
+        "size": "Two-Handed"
+    }
+]

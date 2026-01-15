@@ -1,4 +1,9 @@
 {
-  "ExpandedNodes": [],
+  "ExpandedNodes": [
+    "",
+    "\\cppsandbox",
+    "\\cppsandbox\\cppsandbox"
+  ],
+  "SelectedNode": "\\cppsandbox\\cppsandbox\\cppsandbox.cpp",
   "PreviewInSolutionExplorer": false
 }

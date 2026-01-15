@@ -13,6 +13,7 @@
 
 using json_serializer = nlohmann::json;
 
+#pragma region Weapon Manager
 //weapon class enum to string conversion
 std::string weaponClassToString(WeaponClass wc) {
 	switch (wc) {
@@ -105,16 +106,16 @@ std::vector<Weapon> loadWeapons(const std::string& filename) {
 	//organize json data into weapon structs
 	for (const auto& weaponObj : weaponsJson) {
 		Weapon weapon;
-		weapon.name = weaponObj["name"];
-		weapon.size = weaponObj["size"];
-		weapon.weaponClass = stringToWeaponClass(weaponObj["class"]);
-		weapon.Shape = weaponObj["shape"];
-		weapon.rarity = stringToRarity(weaponObj["rarity"]);
-		weapon.dmg = weaponObj["dmg"];
-		weapon.ndmg = weaponObj["ndmg"];
-		weapon.odmg = weaponObj["odmg"];
-		weapon.price = weaponObj["price"];
-		weapon.description = weaponObj["description"];
+		weapon.name = weaponObj.at("name");
+		weapon.size = weaponObj.at("size");
+		weapon.weaponClass = stringToWeaponClass(weaponObj.at("class"));
+		weapon.Shape = weaponObj.at("shape");
+		weapon.rarity = stringToRarity(weaponObj.at("rarity"));
+		weapon.dmg = weaponObj.at("dmg");
+		weapon.ndmg = weaponObj.at("ndmg");
+		weapon.odmg = weaponObj.at("odmg");
+		weapon.price = weaponObj.at("price");
+		weapon.description = weaponObj.at("description");
 
 		weapons.push_back(weapon);
 	}
@@ -291,6 +292,55 @@ void weaponManagerMenu(std::vector<Weapon>& weapons) {
 		}
 	}
 }
+#pragma endregion
+
+#pragma region Lore Manager
+void saveLoreEntries(const std::vector<LoreEntry>& entries, const std::string& filename) {
+	json_serializer loreJson = json_serializer::array();
+
+	for (const auto& entry : entries) {
+		json_serializer entryObj;
+		entryObj["id"] = entry.id;
+		entryObj["title"] = entry.title;
+		entryObj["category"] = loreCategoryToString(entry.category);
+		entryObj["content"] = entry.content;
+		entryObj["subcategory"] = entry.subcategory;
+
+		loreJson.push_back(entryObj);
+	}
+
+	std::ofstream outFile(filename);
+	if (outFile.is_open()) {
+		outFile << loreJson.dump(4); // Pretty print with 4 spaces indentation
+		outFile.close();
+		std::cout << "Lore entries saved to " << filename << "\n";
+	}
+	else {
+		std::cout << "\nError: Could not save lore entries\n";
+	}
+}
+
+std::vector<LoreEntry> loadLoreEntries(const std::string& filename) {
+	std::vector<LoreEntry> entries;
+
+	std::ifstream inFile(filename);
+	if (!inFile.is_open()) {
+		std::cout << "No existing lore entries found. Starting fresh.\n";
+		return entries;
+	}
+
+	json_serializer loreJson;
+	inFile >> loreJson;
+	inFile.close();
+
+	for (const auto& entryObj : loreJson) {
+		LoreEntry entry;
+		entry.id = entryObj.at("id");
+		entry.title = entryObj.at("title");
+		entry.category = entryObj.at("category");
+		entry.subcategory = entryObj.at("subcategory");
+		entry.content = entryObj.at("content");
+#pragma endregion
 
 int main()
 {

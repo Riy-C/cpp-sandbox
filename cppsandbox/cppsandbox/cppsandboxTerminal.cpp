@@ -148,11 +148,11 @@ void addWeapon(std::vector<Weapon>& weapons) {
 	int classChoice = 0;
 	std::cin >> classChoice;
 	switch (classChoice) {
-	case 1: newWeapon.weaponClass = WeaponClass::Physical; break;
-	case 2: newWeapon.weaponClass = WeaponClass::Neo; break;
-	case 3: newWeapon.weaponClass = WeaponClass::Occult; break;
-	case 4: newWeapon.weaponClass = WeaponClass::Spiritbound; break;
-	default: newWeapon.weaponClass = WeaponClass::Physical;
+    	case 1: newWeapon.weaponClass = WeaponClass::Physical; break;
+    	case 2: newWeapon.weaponClass = WeaponClass::Neo; break;
+    	case 3: newWeapon.weaponClass = WeaponClass::Occult; break;
+    	case 4: newWeapon.weaponClass = WeaponClass::Spiritbound; break;
+    	default: newWeapon.weaponClass = WeaponClass::Physical;
 	}
 
 	std::cin.ignore(); //clear input buffer
@@ -172,13 +172,13 @@ void addWeapon(std::vector<Weapon>& weapons) {
 	int rarityChoice = 0;
 	std::cin >> rarityChoice;
 	switch (rarityChoice) {
-	case 1: newWeapon.rarity = Rarity::Junk; break;
-	case 2: newWeapon.rarity = Rarity::Common; break;
-	case 3: newWeapon.rarity = Rarity::Uncommon; break;
-	case 4: newWeapon.rarity = Rarity::Rare; break;
-	case 5: newWeapon.rarity = Rarity::Signature; break;
-	case 6: newWeapon.rarity = Rarity::Forbidden; break;
-	default: newWeapon.rarity = Rarity::Common;
+    	case 1: newWeapon.rarity = Rarity::Junk; break;
+    	case 2: newWeapon.rarity = Rarity::Common; break;
+    	case 3: newWeapon.rarity = Rarity::Uncommon; break;
+    	case 4: newWeapon.rarity = Rarity::Rare; break;
+    	case 5: newWeapon.rarity = Rarity::Signature; break;
+    	case 6: newWeapon.rarity = Rarity::Forbidden; break;
+    	default: newWeapon.rarity = Rarity::Common;
 	}
 
 	std::cout << "Physical Damage: ";
@@ -295,9 +295,11 @@ void weaponManagerMenu(std::vector<Weapon>& weapons) {
 #pragma endregion
 
 #pragma region Lore Manager
+//Lore Entry Save function
 void saveLoreEntries(const std::vector<LoreEntry>& entries, const std::string& filename) {
 	json_serializer loreJson = json_serializer::array();
 
+	// this for loop goes through each entry in the entries vector, priming it for json serialization
 	for (const auto& entry : entries) {
 		json_serializer entryObj;
 		entryObj["id"] = entry.id;
@@ -309,30 +311,36 @@ void saveLoreEntries(const std::vector<LoreEntry>& entries, const std::string& f
 		loreJson.push_back(entryObj);
 	}
 
+	//this writes the serialized json data to a file
 	std::ofstream outFile(filename);
 	if (outFile.is_open()) {
 		outFile << loreJson.dump(4); // Pretty print with 4 spaces indentation
 		outFile.close();
 		std::cout << "Lore entries saved to " << filename << "\n";
 	}
+	//if it cant, it gives an error message
 	else {
 		std::cout << "\nError: Could not save lore entries\n";
 	}
 }
 
+//Lore Entry Loading function
 std::vector<LoreEntry> loadLoreEntries(const std::string& filename) {
 	std::vector<LoreEntry> entries;
 
+	//finds and opens the lore json. error if not
 	std::ifstream inFile(filename);
 	if (!inFile.is_open()) {
 		std::cout << "No existing lore entries found. Starting fresh.\n";
 		return entries;
 	}
 
+	//primes the lore json for writing in-file
 	json_serializer loreJson;
 	inFile >> loreJson;
 	inFile.close();
 
+	//goes through each attribute in a lore entry's object
 	for (const auto& entryObj : loreJson) {
 		LoreEntry entry;
 		entry.id = entryObj.at("id");
@@ -340,6 +348,9 @@ std::vector<LoreEntry> loadLoreEntries(const std::string& filename) {
 		entry.category = entryObj.at("category");
 		entry.subcategory = entryObj.at("subcategory");
 		entry.content = entryObj.at("content");
+	}
+
+}
 #pragma endregion
 
 int main()
@@ -348,7 +359,7 @@ int main()
     std::cout << "=======================\n";
 
 	std::vector<Weapon> weapons = loadWeapons("weapons.json");
-	std::vector<LoreEntry> loreEntries = LoadLoreEntries("lore.json");
+	std::vector<LoreEntry> loreEntries = loadLoreEntries("lore.json");
 
 	bool running = true;
 	while (running) {
@@ -373,4 +384,3 @@ int main()
 		}
 	}
 }
-
